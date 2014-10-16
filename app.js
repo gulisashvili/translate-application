@@ -5,11 +5,17 @@
 
 var express = require('express')
   , routes = require('./routes')
-  , translator = require('./helpers/translate-api');
+  , translator = require('./helpers/translate-api')
+  , mongoose = require('mongoose');
+
+mongoose.connect("mongodb://localhost/db");
 
 var app = module.exports = express.createServer();
 
 // Configuration
+
+var Translate = require('./models/translate');
+
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -28,22 +34,69 @@ app.configure('production', function(){
   app.use(express.errorHandler());
 });
 
+
+// var girl = new Translate({
+//   word: 'girl',
+//   text: 'gogo'
+// });
+
+// girl.save(function(err) {
+//   if(err) {console.log(err);}
+// });
+
+// Translate.find().remove({word: 'girl'});
+
+Translate.find({}, function(err, doc) {
+  console.log(doc);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Routes
 
 app.get('/', routes.index);
 app.post('/translate', function(req, res) {
   var data = req.body.word;
-  translator.translate(data, function(err, result) {
-    if(err) { 
-      res.json({ error: "სიტყვა ვერ მოიძებნა" });
-    } else if (result) {
-        var translationData = {
-          word: data,
-          text: result
-        };
-        res.json(translationData);
+  Translate.findOne( { word: data}, function(err, doc) {
+    if(err) {
+      console.log(err)
+    } else if (doc) {
+        console.log("From DB")
+        res.json(doc);
+    } else if (!doc) {
+        translator.translate(data, function(err, result) {
+          if(err) { 
+            res.json({ error: "error" });
+          } else if (result) {
+              var translationData = {
+                word: data,
+                text: result
+              };
+          
+          var translatedData = new Translate(translationData);
+          translatedData.save(function(err) {
+            if(err) { throw err };
+          });
+          res.json(translationData);
+          }
+  });
     }
   });
+  
+
 });
 
 

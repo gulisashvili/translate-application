@@ -8,7 +8,13 @@ $(function() {
       word: translateWord
     };
     $.post('/translate', data , function(result) {
-      console.log("From server " + result.word + "-" + result.text);
+      if(result.error) {
+        searchResults.html("<div class='alert alert-danger'><strong>  სიტყვა ვერ მოიძებნა </strong> - </div>"); 
+      } else {
+          searchResults.html("<div class='alert alert-success'><strong>" +
+            result.word + "</strong> - " + result.text + "</div>");  
+      }
+            
     });
   });
 
