@@ -4,7 +4,8 @@
  */
 
 var express = require('express')
-  , routes = require('./routes');
+  , routes = require('./routes')
+  , translator = require('./helpers/translate-api');
 
 var app = module.exports = express.createServer();
 
@@ -30,6 +31,24 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', routes.index);
+app.post('/translate', function(req, res) {
+  var data = req.body.word;
+  translator.translate(data, function(err, result) {
+    if(err) { 
+      res.json({ error: "სიტყვა ვერ მოიძებნა" });
+    } else if (result) {
+        var translationData = {
+          word: data,
+          text: result
+        };
+        res.json(translationData);
+    }
+  });
+});
+
+
+
+
 
 app.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
