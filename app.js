@@ -35,36 +35,6 @@ app.configure('production', function(){
 });
 
 
-// var girl = new Translate({
-//   word: 'girl',
-//   text: 'gogo'
-// });
-
-// girl.save(function(err) {
-//   if(err) {console.log(err);}
-// });
-
-// Translate.find().remove({word: 'girl'});
-
-Translate.find({}, function(err, doc) {
-  console.log(doc);
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // Routes
 
 app.get('/', routes.index);
@@ -74,7 +44,6 @@ app.post('/translate', function(req, res) {
     if(err) {
       console.log(err)
     } else if (doc) {
-        console.log("From DB")
         res.json(doc);
     } else if (!doc) {
         translator.translate(data, function(err, result) {
@@ -92,11 +61,9 @@ app.post('/translate', function(req, res) {
           });
           res.json(translationData);
           }
-  });
+      });
     }
   });
-  
-
 });
 
 
