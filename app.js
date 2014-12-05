@@ -4,6 +4,12 @@ var express = require('express')
   , mongoose = require('mongoose');
 
 
+
+
+var app = module.exports = express.createServer();
+
+// Configuration
+
 app.set('env', process.env.NODE_ENV = process.env.NODE_ENV || 'development'); 
 
 // connect to database based on enviroment
@@ -13,9 +19,8 @@ if(app.get('env') == 'development') {
   mongoose.connect('mongodb://levanigls:milan@ds061360.mongolab.com:61360/translate-db');
 }
 
-var app = module.exports = express.createServer();
 
-// Configuration
+
 
 var Translate = require('./models/translate');
 
