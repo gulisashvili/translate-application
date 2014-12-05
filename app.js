@@ -3,8 +3,15 @@ var express = require('express')
   , translator = require('./helpers/translate-api')
   , mongoose = require('mongoose');
 
-mongoose.connect("mongodb://localhost/db");
 
+app.set('env', process.env.NODE_ENV = process.env.NODE_ENV || 'development'); 
+
+// connect to database based on enviroment
+if(app.get('env') == 'development') {
+  mongoose.connect('mongodb://localhost/db');
+} else {
+  mongoose.connect('mongodb://levanigls:milan@ds061360.mongolab.com:61360/translate-db');
+}
 
 var app = module.exports = express.createServer();
 
