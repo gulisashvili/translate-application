@@ -1,14 +1,10 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express')
   , routes = require('./routes')
   , translator = require('./helpers/translate-api')
   , mongoose = require('mongoose');
 
 mongoose.connect("mongodb://localhost/db");
+
 
 var app = module.exports = express.createServer();
 

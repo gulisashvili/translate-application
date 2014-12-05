@@ -8,4 +8,9 @@
     , "mongoose" : "*"
     , "request" : "*"
   }
+  ,
+   "engines": {
+    "node": "~0.10.x",
+    "npm": "~2.1.x"
+  }
 }
