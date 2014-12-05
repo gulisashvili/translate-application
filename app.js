@@ -26,6 +26,7 @@ var Translate = require('./models/translate');
 
 
 app.configure(function(){
+  app.set('port', process.env.PORT = process.env.PORT || 3000);  
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
@@ -77,7 +78,6 @@ app.post('/translate', function(req, res) {
 
 
 
-
-app.listen(3000, function(){
-  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+app.listen(process.env.PORT, function() {
+  console.log("Server Started");
 });
